@@ -1,0 +1,32 @@
+#  Template NodeJS Cloud serverless functions
+
+#  This template allows you to validate your NodeJS code.
+#  The workflow allows running tests and code linting on the default branch.
+
+pipelines:
+  branches:
+    development:
+      - step:
+          caches:
+            - node
+          name: Deploy development Community 
+          #deployment: /production on gcp 
+          image: google/cloud-sdk:latest
+          script:
+              - apt-get update && apt-get install -y gettext-base
+              - envsubst < sa-dollappnodejs.dist.json > service-account.json
+              - gcloud auth activate-service-account --key-file=service-account.json
+              - gcloud functions deploy community-DEV --entry-point community --runtime nodejs12 --trigger-http --allow-unauthenticated --project $GCP_DOLLAPPNODEJS_PROJECT_ID --region $GCP_DOLLAPPNODEJS_REGION
+    master:
+      - step:
+          caches:
+            - node
+          name: Deploy master branch Community
+          #deployment: /production on gcp 
+          image: google/cloud-sdk:latest
+          script:
+              - apt-get update && apt-get install -y gettext-base
+              - envsubst < sa-dollappnodejs.dist.json > service-account.json
+              - gcloud auth activate-service-account --key-file=service-account.json
+              - gcloud functions deploy community --entry-point community --runtime nodejs12 --trigger-http --allow-unauthenticated --project $GCP_DOLLAPPNODEJS_PROJECT_ID --region $GCP_DOLLAPPNODEJS_REGION
+          

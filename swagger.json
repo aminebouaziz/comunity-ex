@@ -1,0 +1,436 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "This is the documentation of DollApp's community-local-env API.",
+    "version": "1.0.0",
+    "title": "DollApp's Community API"
+  },
+  "servers": [
+    {
+      "url": "https://europe-west1-dollapp-nodejs.cloudfunctions.net/community",
+      "description": "community serverless function GCP"
+    }
+  ],
+  "tags": [
+    {
+      "name": "community",
+      "description": "project to manage our social community"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "community"
+        ],
+        "summary": "First example endpoint",
+        "description": "Return a simple success message",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Garment"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "garments"
+        ],
+        "summary": "Add new garments to user's collections",
+        "description": "The endpoint take user ID as parameter, and an array of garment objects, then add these garments to respective collections and return the number of items added",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "description": "Array of garments object to be added",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Garment"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/PostUserResponse"
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/ex2": {
+      "put": {
+        "tags": [
+          "community"
+        ],
+        "summary": "Update example endpoit",
+        "description": "Return a simple success message",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "collection",
+            "description": "Collection name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "description": "Unique key ID of the garment",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dirty",
+            "in": "query",
+            "description": "The new value of dirty property",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/PutResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Garment": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "category",
+        "layer",
+        "colour_1",
+        "percentage_1",
+        "spring_summer",
+        "fall_winter",
+        "sex",
+        "imageUrl",
+        "dirty"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "category":{
+          "type": "string"
+        },
+        "layer": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "streetwear": {
+          "type": "integer"
+        },
+        "grunge": {
+          "type": "integer"
+        },
+        "sportswear": {
+          "type": "integer"
+        },
+        "cocktail": {
+          "type": "integer"
+        },
+        "formal":{
+          "type": "integer"
+        },
+        "smart_casual": {
+          "type": "integer"
+        },
+        "casual": {
+          "type": "integer"
+        },
+        "hipster": {
+          "type": "integer"
+        },
+        "beachwear": {
+          "type": "integer"
+        },
+        "pattern":{
+          "type": "string"
+        },
+        "design": {
+          "type": "string"
+        },
+        "colour_1": {
+          "type": "string"
+        },
+        "percentage_1": {
+          "type": "number"
+        },
+        "colour_2": {
+          "type": "string"
+        },
+        "percentage_2": {
+          "type": "number"
+        },
+        "colour_3": {
+          "type": "string"
+        },
+        "percentage_3": {
+          "type": "number"
+        },
+        "material": {
+          "type": "string"
+        },
+        "spring_summer": {
+          "type": "integer"
+        },
+        "fall_winter": {
+          "type": "integer"
+        },
+        "sex": {
+          "type": "string"
+        },
+        "fit": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "dirty":{
+          "type": "integer"
+        }
+      }
+    },
+    "UserGarment": {
+      "type": "object",
+      "required": [
+          "_key",
+          "_id",
+          "_rev",
+          "name",
+          "type",
+          "category",
+          "layer",
+          "colour_1",
+          "percentage_1",
+          "spring_summer",
+          "fall_winter",
+          "sex",
+          "imageUrl",
+          "dirty"
+      ],
+      "properties": {
+          "_key": {
+              "type": "string"
+          },
+          "_id": {
+              "type": "string"
+          },
+          "_rev": {
+              "type": "string"
+          },
+          "name": {
+              "type": "string"
+          },
+          "type": {
+              "type": "string"
+          },
+          "category":{
+              "type": "string"
+          },
+          "layer": {
+              "type": "string"
+          },
+          "brand": {
+              "type": "string"
+          },
+          "streetwear": {
+              "type": "integer"
+          },
+          "grunge": {
+              "type": "integer"
+          },
+          "sportswear": {
+              "type": "integer"
+          },
+          "cocktail": {
+              "type": "integer"
+          },
+          "formal":{
+              "type": "integer"
+          },
+          "smart_casual": {
+              "type": "integer"
+          },
+          "casual": {
+              "type": "integer"
+          },
+          "hipster": {
+              "type": "integer"
+          },
+          "beachwear": {
+              "type": "integer"
+          },
+          "pattern":{
+              "type": "string"
+          },
+          "design": {
+              "type": "string"
+          },
+          "colour_1": {
+              "type": "string"
+          },
+          "percentage_1": {
+              "type": "number"
+          },
+          "colour_2": {
+              "type": "string"
+          },
+          "percentage_2": {
+              "type": "number"
+          },
+          "colour_3": {
+              "type": "string"
+          },
+          "percentage_3": {
+              "type": "number"
+          },
+          "material": {
+              "type": "string"
+          },
+          "spring_summer": {
+              "type": "integer"
+          },
+          "fall_winter": {
+              "type": "integer"
+          },
+          "sex": {
+              "type": "string"
+          },
+          "fit": {
+              "type": "string"
+          },
+          "imageUrl": {
+              "type": "string"
+          },
+          "dirty":{
+              "type": "integer"
+          }
+      }
+    },
+    "PostUserResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "insert": {
+          "type": "integer"
+        },
+        "error": {
+          "type": "integer"
+        }
+      }
+    },
+    "PostUserCollResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "insert": {
+          "type": "integer"
+        },
+        "garment": {
+          "type": "object",
+          "schema": {
+              "$ref": "#/definitions/UserGarment"
+          }
+        }
+      }
+    },
+    "PutResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

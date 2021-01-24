@@ -1,0 +1,21 @@
+{
+  "name": "community-local-env",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --inspect node_modules/@google-cloud/functions-framework --port=5000 --target=community",
+    "debug": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^1.7.1",
+    "arangojs": "^6.14.1",
+    "axios": "^0.21.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6",
+    "swagger-ui-express": "^4.1.4"
+  }
+}
